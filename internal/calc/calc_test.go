@@ -11,14 +11,18 @@ import (
 
 func TestRun(t *testing.T) {
 	transactions, err := io.ReadTransactions(
-		path.Join("..", "testdata", "transaktioner_20220810_20220810.csv"))
+		path.Join("..", "testdata", "transaktioner_20220810_20220810.csv"),
+		';',
+	)
 	if err != nil {
 		t.Errorf("reading transactions: %s", err)
 	}
 	t.Logf("Transactions:\n%+v", transactions)
 
 	interestRates, err := io.ReadInterestRates(
-		path.Join("..", "testdata", "annual_interest_rates.csv"))
+		path.Join("..", "testdata", "annual_interest_rates.csv"),
+		';',
+	)
 	if err != nil {
 		t.Errorf("reading interest rates: %s", err)
 	}
@@ -31,5 +35,5 @@ func TestRun(t *testing.T) {
 
 	firstDay := time.Date(2022, time.June, 7, 0, 0, 0, 0, time.UTC)
 
-	Run(firstDay, principal, interestRates, transactions)
+	Run(firstDay, principal, interestRates, transactions, ';')
 }

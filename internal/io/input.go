@@ -22,7 +22,7 @@ type Transaction struct {
 	Currency    string    `csv:"Valuta"`
 }
 
-func ReadTransactions(csvFilename string) ([]Transaction, error) {
+func ReadTransactions(csvFilename string, csvComma rune) ([]Transaction, error) {
 	file, err := os.Open(csvFilename)
 	if err != nil {
 		return nil, fmt.Errorf("opening CSV file: %w", err)
@@ -32,7 +32,7 @@ func ReadTransactions(csvFilename string) ([]Transaction, error) {
 	transactions := []Transaction{}
 
 	r := csv.NewReader(file)
-	r.Comma = ';'
+	r.Comma = csvComma
 
 	_, err = r.Read() // skip first line
 
@@ -146,7 +146,7 @@ func MustNewAnnualInterestRate(year int, month time.Month, day int, decimalRate 
 	}
 }
 
-func ReadInterestRates(csvFilename string) ([]AnnualInterestRate, error) {
+func ReadInterestRates(csvFilename string, comma rune) ([]AnnualInterestRate, error) {
 	file, err := os.Open(csvFilename)
 	if err != nil {
 		return nil, fmt.Errorf("opening CSV file: %w", err)
@@ -157,7 +157,7 @@ func ReadInterestRates(csvFilename string) ([]AnnualInterestRate, error) {
 	bigRat100 := big.NewRat(100, 1)
 
 	r := csv.NewReader(file)
-	r.Comma = ';'
+	r.Comma = comma
 
 	_, err = r.Read() // skip first line
 

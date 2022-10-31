@@ -8,7 +8,7 @@ import (
 )
 
 func TestReadTransactions(t *testing.T) {
-	transactions, err := ReadTransactions(path.Join("..", "testdata", "transaktioner_20220810_20220810.csv"))
+	transactions, err := ReadTransactions(path.Join("..", "testdata", "transaktioner_20220810_20220810.csv"), ';')
 
 	if err != nil {
 		t.Errorf("reading transactions: %s", err)
@@ -118,7 +118,10 @@ func TestParseAmount_Calculations(t *testing.T) {
 }
 
 func TestReadInterestRates(t *testing.T) {
-	rates, err := ReadInterestRates(path.Join("..", "testdata", "annual_interest_rates.csv"))
+	rates, err := ReadInterestRates(
+		path.Join("..", "testdata", "annual_interest_rates.csv"),
+		';',
+	)
 	if err != nil {
 		t.Errorf("reading interest rates: %s", err)
 	}

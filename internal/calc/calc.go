@@ -1,8 +1,9 @@
 package calc
 
 import (
-	"fmt"
+	"encoding/csv"
 	"math/big"
+	"os"
 	"time"
 
 	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal/io"
@@ -12,14 +13,24 @@ import (
 // money borrowed), the first day of the loan, a list of transactions
 // made, and a list of interest rate changes (incl. one that covers
 // the first day of the loan).
-func Run(firstDay time.Time, principal *big.Rat, interestRates []io.AnnualInterestRate, transactions []io.Transaction) {
+func Run(firstDay time.Time, principal *big.Rat, interestRates []io.AnnualInterestRate, transactions []io.Transaction, outComma rune) {
 	bank := NewBank(transactions, interestRates)
 	loan := NewLoan(principal)
 
 	start := DateFromTime(firstDay)
 	end := DateFromTime(time.Now())
 
-	fmt.Println("Date ; Annual interest rate (%) ; Balance ; Accrued interest")
+	writer := csv.NewWriter(os.Stdout)
+	writer.Comma = outComma
+
+	defer writer.Flush()
+
+	writer.Write([]string{
+		"Date",
+		"Annual interest rate (%)",
+		"Balance",
+		"Accrued interest",
+	})
 
 	for day := DateFromTime(start); day.Before(end); day = day.AddDate(0, 0, 1) {
 		loan = bank.Process(day, loan)
@@ -31,11 +42,12 @@ func Run(firstDay time.Time, principal *big.Rat, interestRates []io.AnnualIntere
 			airText = air.Mul(air, big.NewRat(100, 1)).FloatString(2)
 		}
 
-		fmt.Printf("%s ; %s ; %s ; %s \n",
+		writer.Write([]string{
 			day.Format("2006-01-02"),
 			airText,
 			loan.balance.FloatString(2),
-			loan.interest.FloatString(2))
+			loan.interest.FloatString(2),
+		})
 	}
 }
 
