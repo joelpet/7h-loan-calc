@@ -1,0 +1,5 @@
+﻿Datum;Konto;Typ av transaktion;Värdepapper/beskrivning;Antal;Kurs;Belopp;Courtage;Valuta;ISIN
+2022-11-22;Lånekonto;Insättning;ÅTERBETALN;-;-;1136;-;SEK;-
+2022-11-03;Lånekonto;Insättning;ÖVERFÖRING;-;-;1300;-;SEK;-
+2022-10-27;Lånekonto;Insättning;ÖVERFÖRING;-;-;3100;-;SEK;-
+2022-08-10;Lånekonto;Insättning;RÄNTA+AMOR;-;-;3003,9;-;SEK;-

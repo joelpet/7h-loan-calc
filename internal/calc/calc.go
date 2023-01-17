@@ -2,25 +2,27 @@ package calc
 
 import (
 	"encoding/csv"
+	"io"
 	"math/big"
-	"os"
 	"time"
 
-	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal/io"
+	intio "gitlab.joelpet.se/joelpet/7h-loan-calc/internal/io"
 )
 
 // Run runs the calculations given the principal (i.e. initial sum of
 // money borrowed), the first day of the loan, a list of transactions
 // made, and a list of interest rate changes (incl. one that covers
-// the first day of the loan).
-func Run(firstDay time.Time, principal *big.Rat, interestRates []io.AnnualInterestRate, transactions []io.Transaction, outComma rune) {
+// the first day of the loan). Results are written to w as CSV
+// records—one record per day—indicating the state of the loan on each
+// day.
+func Run(w io.Writer, firstDay time.Time, principal *big.Rat, interestRates []intio.AnnualInterestRate, transactions []intio.Transaction, outComma rune) {
 	bank := NewBank(transactions, interestRates)
 	loan := NewLoan(principal)
 
 	start := DateFromTime(firstDay)
 	end := DateFromTime(time.Now())
 
-	writer := csv.NewWriter(os.Stdout)
+	writer := csv.NewWriter(w)
 	writer.Comma = outComma
 
 	defer writer.Flush()

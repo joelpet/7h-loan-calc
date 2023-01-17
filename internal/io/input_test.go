@@ -8,7 +8,7 @@ import (
 )
 
 func TestReadTransactions(t *testing.T) {
-	transactions, err := ReadTransactions(path.Join("..", "testdata", "transaktioner_20220810_20220810.csv"), ';')
+	transactions, err := ReadTransactions(path.Join("..", "testdata", "transactions.csv"), ';')
 
 	if err != nil {
 		t.Errorf("reading transactions: %s", err)
@@ -16,11 +16,11 @@ func TestReadTransactions(t *testing.T) {
 
 	t.Logf("%+v", transactions)
 
-	if want, got := 1, len(transactions); want != got {
+	if want, got := 4, len(transactions); want != got {
 		t.Errorf("want %v, but got %v", want, got)
 	}
 
-	if want, got := time.Date(2022, 8, 10, 0, 0, 0, 0, time.UTC), transactions[0].Date; want != got {
+	if want, got := time.Date(2022, 11, 22, 0, 0, 0, 0, time.UTC), transactions[0].Date; want != got {
 		t.Errorf("want %v, but got %v", want, got)
 	}
 }

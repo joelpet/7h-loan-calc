@@ -5,6 +5,7 @@ import (
 	"flag"
 	"log"
 	"math/big"
+	"os"
 	"time"
 
 	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal/buildinfo"
@@ -82,5 +83,5 @@ func main() {
 	log.Printf("Calculating loan based on %d transaction(s) and %d interest rate entries.",
 		len(transactionsL), len(interestRatesL))
 
-	calc.Run(firstDayT, principalBalance, interestRatesL, transactionsL, outComma)
+	calc.Run(os.Stdout, firstDayT, principalBalance, interestRatesL, transactionsL, outComma)
 }
