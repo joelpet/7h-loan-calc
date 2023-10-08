@@ -20,7 +20,7 @@ func Run(w io.Writer, firstDay time.Time, principal *big.Rat, interestRates []in
 	loan := NewLoan(principal)
 
 	start := DateFromTime(firstDay)
-	end := DateFromTime(time.Now())
+	end := DateFromTime(time.Now()).AddDate(0, 0, 1)
 
 	writer := csv.NewWriter(w)
 	writer.Comma = outComma
