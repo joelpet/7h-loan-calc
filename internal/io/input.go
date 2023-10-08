@@ -10,6 +10,8 @@ import (
 	"os"
 	"strings"
 	"time"
+
+	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal"
 )
 
 type Transaction struct {
@@ -48,7 +50,7 @@ func ReadTransactions(csvFilename string, csvComma rune) ([]Transaction, error) 
 		rDate, rType, rDesc, rAmount, rCurrency :=
 			r[0], r[2], r[3], r[6], r[8]
 
-		date, err := time.Parse("2006-01-02", rDate)
+		date, err := time.Parse(internal.DateLayout, rDate)
 		if err != nil {
 			return nil, fmt.Errorf("parsing date: %w", err)
 		}
@@ -124,7 +126,7 @@ func (r AnnualInterestRate) Equal(s AnnualInterestRate) bool {
 }
 
 func (r AnnualInterestRate) String() string {
-	return fmt.Sprintf("%v %s", r.Day.Format("2006-01-02"), r.DecimalRate)
+	return fmt.Sprintf("%v %s", r.Day.Format(internal.DateLayout), r.DecimalRate)
 }
 
 func NewAnnualInterestRate(year int, month time.Month, day int, decimalRate string) (AnnualInterestRate, error) {
@@ -172,7 +174,7 @@ func ReadInterestRates(csvFilename string, comma rune) ([]AnnualInterestRate, er
 
 		rDate, rPercentage := r[0], r[1]
 
-		date, err := time.Parse("2006-01-02", rDate)
+		date, err := time.Parse(internal.DateLayout, rDate)
 		if err != nil {
 			return nil, fmt.Errorf("parsing date: %w", err)
 		}

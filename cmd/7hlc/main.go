@@ -8,6 +8,7 @@ import (
 	"os"
 	"time"
 
+	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal"
 	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal/buildinfo"
 	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal/calc"
 	intio "gitlab.joelpet.se/joelpet/7h-loan-calc/internal/io"
@@ -60,7 +61,7 @@ func main() {
 		log.Fatalf("failed to get output CSV file field delimiter character: %s", err)
 	}
 
-	firstDayT, err := time.Parse("2006-01-02", firstDay)
+	firstDayT, err := time.Parse(internal.DateLayout, firstDay)
 	if err != nil {
 		log.Fatalf("failed to read first day argument: %s", err)
 	}

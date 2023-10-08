@@ -6,6 +6,7 @@ import (
 	"math/big"
 	"time"
 
+	"gitlab.joelpet.se/joelpet/7h-loan-calc/internal"
 	intio "gitlab.joelpet.se/joelpet/7h-loan-calc/internal/io"
 )
 
@@ -45,7 +46,7 @@ func Run(w io.Writer, firstDay time.Time, principal *big.Rat, interestRates []in
 		}
 
 		writer.Write([]string{
-			day.Format("2006-01-02"),
+			day.Format(internal.DateLayout),
 			airText,
 			loan.balance.FloatString(2),
 			loan.interest.FloatString(2),
