@@ -46,8 +46,21 @@ func TestRun(t *testing.T) {
 	if err != nil {
 		t.Errorf("reading CSV output: %s", err)
 	}
-	if want, got := 225, len(records); want != got {
-		t.Errorf("wanted %d, but got %d", want, got)
+
+	numDayRecords := len(records) - 1
+	recordsEndDate := firstDay.AddDate(0, 0, numDayRecords-1)
+	if want, got := DateFromTime(time.Now()).Sub(firstDay), recordsEndDate.Sub(firstDay); want != got {
+		t.Errorf("wanted record based loan duration %+v, but got %+v", want, got)
+	}
+	if want, got := DateFromTime(time.Now()), firstDay.AddDate(0, 0, numDayRecords-1); want != got {
+		t.Errorf("wanted %d days starting on first day to be today %s, but got %s",
+			numDayRecords, want, got)
+	}
+	if want, got := firstDay, mustParseTime(t, records[1][0]); want != got {
+		t.Errorf("wanted first record date %+v, but got %+v", want, got)
+	}
+	if want, got := recordsEndDate, mustParseTime(t, records[len(records)-1][0]); want != got {
+		t.Errorf("wanted last record date %+v, but got %+v", want, got)
 	}
 
 	wantDateBalances := map[string]string{
@@ -65,6 +78,7 @@ func TestRun(t *testing.T) {
 		"2022-11-23": "92173.64",
 		"2022-12-31": "92378.36",
 		"2023-01-01": "92581.59",
+		"2023-10-01": "94430.92",
 	}
 
 	for _, record := range records {
@@ -82,4 +96,13 @@ func TestRun(t *testing.T) {
 			t.Logf("%+v", record)
 		}
 	}
+}
+
+func mustParseTime(t *testing.T, value string) time.Time {
+	t.Helper()
+	res, err := time.Parse("2006-01-02", value)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return res
 }
