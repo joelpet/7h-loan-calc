@@ -1,15 +1,9 @@
 image: golang:bullseye
 
-stages:
-  - test
-  - build
-
 format:
-  stage: test
+  stage: build
   script:
     - go fmt ./...
-    - go vet ./...
-    - go test -race ./...
 
 compile:
   stage: build
@@ -18,3 +12,13 @@ compile:
   artifacts:
     paths:
       - out
+
+vet:
+  stage: test
+  script:
+    - go vet ./...
+
+test:
+  stage: test
+  script:
+    - go test -race ./...
