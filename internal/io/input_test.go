@@ -130,6 +130,7 @@ func TestReadInterestRates(t *testing.T) {
 		MustNewAnnualInterestRate(2022, time.January, 1, "0.0114"),
 		MustNewAnnualInterestRate(2022, time.July, 6, "0.0164"),
 		MustNewAnnualInterestRate(2022, time.September, 21, "0.0264"),
+		MustNewAnnualInterestRate(2023, time.November, 1, "0.0454"),
 		MustNewAnnualInterestRate(2345, time.January, 1, "1.0000"),
 	}
 
